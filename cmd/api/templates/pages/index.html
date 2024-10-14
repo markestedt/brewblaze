@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.orange.min.css">
+    <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+    <script src="/static/js/site.js"></script>
+    <link rel="stylesheet" href="/static/css/site.css" />
+    <title>BrewBlaze</title>
+</head>
+
+<body>
+    <main class="container">
+        <header>
+            <hgroup>
+                <h1><a href="/">BrewBlaze</a></h1>
+                <p>BrewBlaze ignites your passion for brewing with personalized recipes that fuel creativity and craft
+                    unforgettable flavors.</p>
+            </hgroup>
+        </header>
+        <section>
+            <form hx-post="/create-recipe" hx-target="#recipe" hx-swap="outerHTML show:top"
+                hx-disabled-elt="find button"
+                hx-on::before-request="htmx.find('#loading-modal').setAttribute('open', true)"
+                hx-on::after-request="htmx.find('#loading-modal').removeAttribute('open')">
+                <label>
+                    Style
+                    <select name="style" required aria-required="true">
+                        <option selected disabled value="">Pick a style</option>
+                        <option value="Any style">Any style</option>
+                        {{ range .Styles }}
+                        <option value="{{ .Name }}">{{ .Name }}</option>
+                        {{ end }}
+                    </select>
+                </label>
+                <fieldset>
+                    <legend>Measurements:</legend>
+                    <input type="radio" id="metric" value="metric" name="measurements" checked
+                        hx-on:click="setBatchSizeLabel('L');" />
+                    <label for="metric">Metric</label>
+                    <input type="radio" id="imperial" value="imperial" name="measurements"
+                        hx-on:click="setBatchSizeLabel('gal');" />
+                    <label for="imperial">Imperial</label>
+                </fieldset>
+                <label>
+                    Batch size (L)
+                    <input name="batch-size" value="10" type="number" required aria-required="true"
+                        aria-describedby="batch-size-helper" min="0" step="1" />
+                </label>
+                <fieldset>
+                    <legend>Yeast type:</legend>
+                    <input type="radio" id="any" value="any" name="yeast" checked />
+                    <label for="any">Any</label>
+                    <input type="radio" id="dry" value="dry" name="yeast" />
+                    <label for="dry">Dry</label>
+                    <input type="radio" id="liquid" value="liquid" name="yeast" />
+                    <label for="liquid">Liquid</label>
+                </fieldset>
+                <label>
+                    Description
+                    <textarea name="description" placeholder="Describe the beer you want to brew"
+                        aria-label="Describe the beer"></textarea>
+                    <small>Need some help? <a href="#" data-target="examples-modal" onclick="toggleModal(event)">Try one
+                            of these
+                            examples!</a></small>
+                </label>
+                <button type="submit">Brew it!</button>
+            </form>
+        </section>
+        <section id="recipe"></section>
+    </main>
+    <dialog id="loading-modal">
+        <article>
+            <p>
+                Adding the perfect hops and grains... your brew is in progress!
+            </p>
+            <progress></progress>
+        </article>
+    </dialog>
+    <dialog id="examples-modal">
+        <article>
+            <header>Examples <small>(Click to select one)</small> <button aria-label="Close" rel="prev"
+                    hx-on:click="closeModal(htmx.find('#examples-modal'))"></button></header>
+            <ul class="examples">
+                {{ range .Examples }}
+                <li onclick="setDescription(event)">
+                    <i>{{ . }}</i>
+                </li>
+                {{ end }}
+            </ul>
+        </article>
+    </dialog>
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+        data-cf-beacon='{"token": "b0e315ffb9b045d0b2c54fd646aa9859"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>

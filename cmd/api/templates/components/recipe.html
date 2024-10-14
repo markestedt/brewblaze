@@ -1,0 +1,57 @@
+<section id="recipe">
+    <h2 id="recipeName">{{ .Recipe.Name }}</h2>
+    <i>{{ .Recipe.Description }}</i>
+    <hr>
+    <ul>
+        <li>Style: {{ .Recipe.Style }}</li>
+        <li>Vol: {{ printf "%.f" .Recipe.BatchSize }} {{ .Recipe.VolumeUnit }}</li>
+        <li>OG: {{ printf "%.3f" .Recipe.OriginalGravity }}</li>
+        <li>FG: {{ printf "%.3f" .Recipe.FinalGravity }}</li>
+        <li>ABV: {{ .Recipe.Abv }}</li>
+        <li>IBU: {{ .Recipe.Ibu }}</li>
+        <li>SRM: {{ .Recipe.Srm }}</li>
+    </ul>
+    <hr>
+    <h3>Fermentables</h3>
+    <ul>
+        {{ range .Recipe.Fermentables }}
+        <li>{{ .Weight }} {{ .Unit }} {{ .Name}}</li>
+        {{ end }}
+    </ul>
+
+    <h3>Hops</h3>
+    <ul>
+        {{ range .Recipe.Hops }}
+        <li>{{ .Weight }} {{ .Unit }} {{ .Name}} - {{ .Use }} - {{ .TimingValue }} {{ .TimingUnit}}</li>
+        {{ end }}
+    </ul>
+
+    <h3>Yeast</h3>
+    <ul>
+        <li>{{ .Recipe.Yeast.Amount }} {{ .Recipe.Yeast.Name }}</li>
+    </ul>
+
+    <h3>Other additions</h3>
+    <ul>
+        {{range .Recipe.OtherAdditions}}
+        <li>{{ .Weight }} {{ .Unit }} {{ .Name}}</li>
+        {{else}}
+        <li>No other additions</li>
+        {{end}}
+    </ul>
+
+    <h3>Instructions</h3>
+    <ol>
+        {{ range .Recipe.Instructions }}
+        <li>{{ .Text }}</li>
+        {{ end }}
+    </ol>
+
+    <h3>Share</h3>
+    <fieldset role="group">
+        <input type="text" name="text" placeholder="Text" aria-label="Text" value="{{.RecipeLink}}" readonly
+            aria-readonly="true">
+        <input hx-on:click="copyToClipboard('{{.RecipeLink}}'); this.value = 'Copied!'" type="button"
+            value="Copy link" />
+    </fieldset>
+</section>

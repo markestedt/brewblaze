@@ -1,0 +1,42 @@
+h1 {
+    background: linear-gradient(90deg, #FF4500, #FF8C00, #FFD700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3rem;
+    /* Adjust the font size as needed */
+    font-weight: bold;
+    /* Optional: adjust font weight */
+}
+
+h1 a {
+    text-decoration: none;
+}
+
+header {
+    margin-bottom: 3rem;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+.examples {
+    padding: 0;
+}
+
+.examples li {
+    list-style: none;
+    padding: 10px 0px;
+}
+
+.examples li {
+    list-style: none;
+    padding: 10px;
+    cursor:pointer;
+}
+
+.examples li:nth-child(even) {
+    background-color: var(--pico-card-sectioning-background-color);
+
+}
