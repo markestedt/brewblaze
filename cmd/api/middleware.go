@@ -4,7 +4,6 @@ import (
 	"net"
 	"net/http"
 	"sync"
-	"text/template"
 	"time"
 
 	"golang.org/x/time/rate"
@@ -52,10 +51,7 @@ func perClientRateLimiter(next func(writer http.ResponseWriter, request *http.Re
 		if !clients[ip].limiter.Allow() {
 			mu.Unlock()
 
-			w.WriteHeader(http.StatusTooManyRequests)
-
-			parsedTemplate, _ := template.ParseFS(templates, "templates/components/error.html")
-			parsedTemplate.Execute(w, nil)
+			http.Error(w, "To many requests", http.StatusTooManyRequests)
 			return
 		}
 		mu.Unlock()

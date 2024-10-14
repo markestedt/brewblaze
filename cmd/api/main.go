@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"text/template"
 
 	"github.com/appwrite/sdk-for-go/appwrite"
 	"github.com/appwrite/sdk-for-go/client"
@@ -22,6 +23,7 @@ type application struct {
 	beerData         *beerstyles.Json
 	appwriteClient   *client.Client
 	recipeRepository *recipe.Repository
+	templates        *template.Template
 }
 
 //go:embed static
@@ -32,6 +34,9 @@ var templates embed.FS
 
 func main() {
 	LoadEnv()
+
+	t := template.Must(template.ParseFS(templates, "templates/components/*.html"))
+	t = template.Must(t.ParseFS(templates, "templates/pages/*.html"))
 
 	appwriteClient := appwrite.NewClient(
 		appwrite.WithProject(os.Getenv("APPWRITE_PROJECT_ID")),
@@ -52,6 +57,7 @@ func main() {
 		beerData:         &bd,
 		appwriteClient:   &appwriteClient,
 		recipeRepository: &recipe.Repository{Db: dbService, Ai: aiClient},
+		templates:        t,
 	}
 
 	fSys, err := fs.Sub(static, ".")

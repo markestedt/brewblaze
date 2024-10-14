@@ -1,12 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"sort"
-	"text/template"
 
 	"github.com/markestedt/brewmind/internal/beerstyles"
 	recipe "github.com/markestedt/brewmind/internal/recipe"
@@ -44,31 +41,16 @@ func (app *application) createRecipeHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	parsedTemplate, err := template.ParseFS(templates, "templates/components/recipe.html")
-	if err != nil {
-		handleError(w, "Error parsing recipe component template", err, http.StatusInternalServerError)
-		return
-	}
+	viewModel := recipeViewModel{RecipeLink: recipe.GetLink(recipeId), Recipe: output}
+	app.templates.ExecuteTemplate(w, "components/recipe", viewModel)
 
-	recipeLink := fmt.Sprintf("%s/recipe/%s", os.Getenv("BASE_URL"), recipeId)
-	parsedTemplate.Execute(w, recipeViewModel{RecipeLink: recipeLink, Recipe: output})
 }
 
 func (app *application) getIndexHandler(w http.ResponseWriter, r *http.Request) {
 	beerStyles := app.beerData.Beerjson.Styles
 	sort.Slice(beerStyles, func(i, j int) bool {
-		// if beerStyles[i].CategoryID != beerStyles[j].CategoryID {
-		// 	return beerStyles[i].CategoryID < beerStyles[j].CategoryID
-		// }
-
 		return beerStyles[i].Name < beerStyles[j].Name
 	})
-
-	parsedTemplate, err := template.ParseFS(templates, "templates/pages/index.html")
-	if err != nil {
-		handleError(w, "Error parsing index page template", err, http.StatusInternalServerError)
-		return
-	}
 
 	examples := [4]string{
 		"I want a bright, juicy beer with flavors and aromas of tropical fruit. It should have a soft and round bitterness, easy to drink.",
@@ -82,7 +64,7 @@ func (app *application) getIndexHandler(w http.ResponseWriter, r *http.Request) 
 		Examples: examples[:],
 	}
 
-	parsedTemplate.Execute(w, viewModel)
+	app.templates.ExecuteTemplate(w, "pages/index", viewModel)
 }
 
 func (app *application) getRecipeHandler(w http.ResponseWriter, r *http.Request) {
@@ -98,18 +80,14 @@ func (app *application) getRecipeHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	recipe, err := tools.ParseJson[recipe.Json](recipeJson)
+	recipeData, err := tools.ParseJson[recipe.Json](recipeJson)
 	if err != nil {
 		handleError(w, "Error parsing recipe json", err, http.StatusInternalServerError)
 		return
 	}
 
-	parsedTemplate, err := template.ParseFS(templates, "templates/pages/recipe.html")
-	if err != nil {
-		handleError(w, "Error parsing recipe page template", err, http.StatusInternalServerError)
-		return
-	}
-	parsedTemplate.Execute(w, recipe)
+	viewModel := recipeViewModel{RecipeLink: recipe.GetLink(recipeId), Recipe: recipeData}
+	app.templates.ExecuteTemplate(w, "pages/recipe", viewModel)
 }
 
 func handleError(w http.ResponseWriter, message string, err error, statusCode int) {

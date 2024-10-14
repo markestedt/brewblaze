@@ -1,8 +1,10 @@
 package recipe
 
 import (
+	"fmt"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -72,4 +74,8 @@ type Json struct {
 		Step int32  `json:"step"`
 		Text string `json:"text"`
 	} `json:"instructions"`
+}
+
+func GetLink(recipeId string) string {
+	return fmt.Sprintf("%s/recipe/%s", os.Getenv("BASE_URL"), recipeId)
 }

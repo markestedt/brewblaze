@@ -1,3 +1,4 @@
+{{define "pages/recipe"}}
 <!DOCTYPE html>
 <html>
 
@@ -8,68 +9,15 @@
     <script src="https://unpkg.com/htmx.org@2.0.2"></script>
     <script src="/static/js/site.js"></script>
     <link rel="stylesheet" href="/static/css/site.css" />
-    <title>{{ .Name }} - BrewBlaze</title>
+    <title>{{ .Recipe.Name }} - BrewBlaze</title>
 </head>
 
 <body>
     <main class="container">
-        <header>
-            <hgroup>
-                <h1><a href="/">BrewBlaze</a></h1>
-                <p>BrewBlaze ignites your passion for brewing with personalized recipes that fuel creativity and craft
-                    unforgettable flavors.</p>
-            </hgroup>
-        </header>
-        <section>
-            <h2 id="recipeName">{{ .Name }}</h2>
-            <i>{{ .Description }}</i>
-            <hr>
-            <ul>
-                <li>Style: {{ .Style }}</li>
-                <li>Vol: {{ printf "%.f" .BatchSize }} {{ .VolumeUnit }}</li>
-                <li>OG: {{ printf "%.3f" .OriginalGravity }}</li>
-                <li>FG: {{ printf "%.3f" .FinalGravity }}</li>
-                <li>ABV: {{ .Abv }}</li>
-                <li>IBU: {{ .Ibu }}</li>
-                <li>SRM: {{ .Srm }}</li>
-            </ul>
-            <hr>
-            <h3>Fermentables</h3>
-            <ul>
-                {{ range .Fermentables }}
-                <li>{{ .Weight }} {{ .Unit }} {{ .Name}}</li>
-                {{ end }}
-            </ul>
-
-            <h3>Hops</h3>
-            <ul>
-                {{ range .Hops }}
-                <li>{{ .Weight }} {{ .Unit }} {{ .Name}} - {{ .Use }} - {{ .TimingValue }} {{ .TimingUnit}}</li>
-                {{ end }}
-            </ul>
-
-            <h3>Yeast</h3>
-            <ul>
-                <li>{{ .Yeast.Amount }} {{ .Yeast.Name }}</li>
-            </ul>
-
-            <h3>Other additions</h3>
-            <ul>
-                {{range .OtherAdditions}}
-                <li>{{ .Weight }} {{ .Unit }} {{ .Name}}</li>
-                {{else}}
-                <li>No other additions</li>
-                {{end}}
-            </ul>
-
-            <h3>Instructions</h3>
-            <ol>
-                {{ range .Instructions }}
-                <li>{{ .Text }}</li>
-                {{ end }}
-            </ol>
-        </section>
+        {{template "components/header"}}
+        {{template "components/recipe" .}}
     </main>
 </body>
 
 </html>
+{{end}}

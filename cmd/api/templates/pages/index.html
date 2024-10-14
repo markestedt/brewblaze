@@ -1,3 +1,4 @@
+{{define "pages/index"}}
 <!DOCTYPE html>
 <html>
 
@@ -13,13 +14,7 @@
 
 <body>
     <main class="container">
-        <header>
-            <hgroup>
-                <h1><a href="/">BrewBlaze</a></h1>
-                <p>BrewBlaze ignites your passion for brewing with personalized recipes that fuel creativity and craft
-                    unforgettable flavors.</p>
-            </hgroup>
-        </header>
+        {{template "components/header"}}
         <section>
             <form hx-post="/create-recipe" hx-target="#recipe" hx-swap="outerHTML show:top"
                 hx-disabled-elt="find button"
@@ -98,3 +93,4 @@
 </body>
 
 </html>
+{{end}}
