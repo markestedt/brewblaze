@@ -65,8 +65,6 @@ func main() {
 	mux.HandleFunc("GET /", app.getIndexHandler)
 	mux.HandleFunc("POST /create-recipe", perClientRateLimiter(app.createRecipeHandler))
 	mux.HandleFunc("GET /recipe/{recipeId}", app.getRecipeHandler)
-	// mux.HandleFunc("GET /login", app.getLoginHandler)
-	// mux.HandleFunc("POST /login", app.postLoginHandler)
 
 	err = http.ListenAndServe(":9595", mux)
 	if errors.Is(err, http.ErrServerClosed) {

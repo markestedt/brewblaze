@@ -9,8 +9,8 @@ import (
 	"text/template"
 
 	"github.com/markestedt/brewmind/internal/beerstyles"
-	"github.com/markestedt/brewmind/internal/jsonhelpers"
 	recipe "github.com/markestedt/brewmind/internal/recipe"
+	"github.com/markestedt/brewmind/internal/tools"
 )
 
 type recipeViewModel struct {
@@ -22,49 +22,6 @@ type indexViewModel struct {
 	Styles   []beerstyles.Style
 	Examples []string
 }
-
-// type ContextValues struct {
-// 	m map[string]interface{}
-// }
-
-// func (v ContextValues) Get(key string) interface{} {
-// 	return v.m[key]
-// }
-
-// var sessionCookieName = "brew-blaze-session"
-// var contextValues = "contextValues"
-
-// func authenticate(f http.HandlerFunc) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		session, err := r.Cookie(sessionCookieName)
-
-// 		if err != nil {
-// 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-// 			return
-// 		}
-
-// 		sessionClient := appwrite.NewClient(
-// 			appwrite.WithProject(os.Getenv("APPWRITE_PROJECT_ID")),
-// 			appwrite.WithSession(session.Value),
-// 		)
-
-// 		account := appwrite.NewAccount(sessionClient)
-// 		user, err := account.Get()
-
-// 		if err != nil {
-// 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-// 			return
-// 		}
-
-// 		v := ContextValues{map[string]interface{}{
-// 			"sessionClient": sessionClient,
-// 			"sessionUser":   user,
-// 		}}
-
-// 		ctx := context.WithValue(r.Context(), contextValues, v)
-// 		f(w, r.WithContext(ctx))
-// 	}
-// }
 
 func (app *application) createRecipeHandler(w http.ResponseWriter, r *http.Request) {
 	input := recipe.ParseRequest(r)
@@ -81,7 +38,7 @@ func (app *application) createRecipeHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	output, err := jsonhelpers.Parse[recipe.Json](generatedRecipe)
+	output, err := tools.ParseJson[recipe.Json](generatedRecipe)
 	if err != nil {
 		handleError(w, "Error parsing recipe json", err, http.StatusInternalServerError)
 		return
@@ -128,48 +85,6 @@ func (app *application) getIndexHandler(w http.ResponseWriter, r *http.Request) 
 	parsedTemplate.Execute(w, viewModel)
 }
 
-// func (app *application) postLoginHandler(w http.ResponseWriter, r *http.Request) {
-// 	r.ParseForm()
-
-// 	email := r.FormValue("email")
-// 	password := r.FormValue("password")
-
-// 	log.Println(email)
-// 	log.Println(password)
-
-// 	account := account.New(app.appwriteClient)
-// 	session, err := account.CreateEmailPasswordSession(email, password)
-
-// 	if err != nil {
-// 		log.Println(err)
-// 		http.Error(w, "Could not login", http.StatusUnauthorized)
-// 		return
-// 	}
-
-// 	expires, _ := time.Parse(time.RFC3339, session.Expire)
-// 	cookie := http.Cookie{
-// 		HttpOnly: true,
-// 		Secure:   true,
-// 		SameSite: http.SameSiteLaxMode,
-// 		Expires:  expires,
-// 		Name:     sessionCookieName,
-// 		Value:    session.Secret,
-// 	}
-
-// 	w.Header().Set("HX-Redirect", "/")
-// 	http.SetCookie(w, &cookie)
-// }
-
-// func (app *application) getLoginHandler(w http.ResponseWriter, r *http.Request) {
-
-// 	parsedTemplate, err := template.ParseFS(templates, "templates/pages/login.html")
-// 	if err != nil {
-// 		handleError(w, "Error parsing login page template", err, http.StatusInternalServerError)
-// 		return
-// 	}
-// 	parsedTemplate.Execute(w, nil)
-// }
-
 func (app *application) getRecipeHandler(w http.ResponseWriter, r *http.Request) {
 	recipeId := r.PathValue("recipeId")
 	if recipeId == "" {
@@ -183,7 +98,7 @@ func (app *application) getRecipeHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	recipe, err := jsonhelpers.Parse[recipe.Json](recipeJson)
+	recipe, err := tools.ParseJson[recipe.Json](recipeJson)
 	if err != nil {
 		handleError(w, "Error parsing recipe json", err, http.StatusInternalServerError)
 		return
@@ -201,11 +116,3 @@ func handleError(w http.ResponseWriter, message string, err error, statusCode in
 	log.Println(message+":", err)
 	http.Error(w, message, statusCode)
 }
-
-// func getLoggedInUser(ctx context.Context) *models.User {
-// 	return ctx.Value(contextValues).(ContextValues).Get("sessionUser").(*models.User)
-// }
-
-// func getSessionClient(ctx context.Context) client.Client {
-// 	return ctx.Value(contextValues).(ContextValues).Get("sessionClient").(client.Client)
-// }
