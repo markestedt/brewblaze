@@ -33,10 +33,69 @@ section {
 .examples li {
     list-style: none;
     padding: 10px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .examples li:nth-child(even) {
     background-color: var(--pico-card-sectioning-background-color);
 
+}
+
+.srmGradient {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg,
+            #fee799 0%,
+            #fdd978 2.5%,
+            #fdcb5a 5%,
+            #fcc143 7.5%,
+            #f7b324 10%,
+            #f5a800 12.5%,
+            #ee9e00 15%,
+            #e69100 17.5%,
+            #e38901 20%,
+            #da7e01 22.5%,
+            #d37400 25%,
+            #cb6c00 27.5%,
+            #c66401 30%,
+            #bf5c01 32.5%,
+            #b65300 35%,
+            #b04f00 37.5%,
+            #ac4701 40%,
+            #ac4701 42.5%,
+            #a24001 45%,
+            #9c3900 47.5%,
+            #963500 50%,
+            #912f00 52.5%,
+            #8c2d01 55%,
+            #832501 57.5%,
+            #7e1f01 60%,
+            #771c01 62.5%,
+            #721b00 65%,
+            #6c1501 67.5%,
+            #670f01 70%,
+            #620f01 72.5%,
+            #5b0d01 75%,
+            #560c03 77.5%,
+            #5d0a02 80%,
+            #500a08 82.5%,
+            #4a0605 85%,
+            #440706 87.5%,
+            #420807 90%,
+            #3c0908 92.5%,
+            #390708 95%,
+            #39080b 97.5%,
+            #35090a 100%);
+}
+
+input[name="srm"] {
+    margin: 0;
+    height:15px;
+}
+
+input[type="range"]::-moz-range-track {
+    background-color: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: transparent;
 }

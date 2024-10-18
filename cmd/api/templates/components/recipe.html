@@ -4,7 +4,6 @@
     <i>{{ .Recipe.Description }}</i>
     <hr>
     <ul>
-        <li>Style: {{ .Recipe.Style }}</li>
         <li>Vol: {{ printf "%.f" .Recipe.BatchSize }} {{ .Recipe.VolumeUnit }}</li>
         <li>OG: {{ printf "%.3f" .Recipe.OriginalGravity }}</li>
         <li>FG: {{ printf "%.3f" .Recipe.FinalGravity }}</li>
@@ -55,5 +54,8 @@
         <input hx-on:click="copyToClipboard('{{.RecipeLink}}'); this.value = 'Copied!'" type="button"
             value="Copy link" />
     </fieldset>
+    <!-- <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button"
+        data-slug="markestedt" data-color="#d24317" data-emoji="🍺" data-font="Cookie" data-text="Buy me a beer"
+        data-outline-color="#ffffff" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script> -->
 </section>
 {{end}}

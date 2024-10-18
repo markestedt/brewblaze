@@ -14,6 +14,8 @@ type UserInput struct {
 	Style        string
 	Description  string
 	Yeast        string
+	UseSrm       bool
+	Srm          float64
 }
 
 func ParseRequest(r *http.Request) UserInput {
@@ -24,12 +26,24 @@ func ParseRequest(r *http.Request) UserInput {
 		batchSize = 10
 	}
 
+	useSrm, err := strconv.ParseBool(r.FormValue("useSrm"))
+	if err != nil {
+		useSrm = false
+	}
+
+	srm, err := strconv.ParseFloat(r.FormValue("srm"), 64)
+	if err != nil {
+		srm = 20
+	}
+
 	return UserInput{
 		Measurements: r.FormValue("measurements"),
 		BatchSize:    math.Abs(batchSize),
 		Style:        r.FormValue("style"),
 		Description:  r.FormValue("description"),
 		Yeast:        r.FormValue("yeast"),
+		UseSrm:       useSrm,
+		Srm:          srm,
 	}
 }
 
@@ -47,7 +61,6 @@ type Json struct {
 	Abv             string  `json:"abv"`
 	Ibu             string  `json:"ibu"`
 	Srm             string  `json:"srm"`
-	Style           string  `json:"style"`
 	Fermentables    []struct {
 		Weight float64 `json:"weight"`
 		Unit   string  `json:"unit"`

@@ -20,18 +20,8 @@
                 hx-disabled-elt="find button"
                 hx-on::before-request="htmx.find('#loading-modal').setAttribute('open', true)"
                 hx-on::after-request="htmx.find('#loading-modal').removeAttribute('open')">
-                <label>
-                    Style
-                    <select name="style" required aria-required="true">
-                        <option selected disabled value="">Pick a style</option>
-                        <option value="Any style">Any style</option>
-                        {{ range .Styles }}
-                        <option value="{{ .Name }}">{{ .Name }}</option>
-                        {{ end }}
-                    </select>
-                </label>
                 <fieldset>
-                    <legend>Measurements:</legend>
+                    <legend>Measurements</legend>
                     <input type="radio" id="metric" value="metric" name="measurements" checked
                         hx-on:click="setBatchSizeLabel('L');" />
                     <label for="metric">Metric</label>
@@ -44,15 +34,16 @@
                     <input name="batch-size" value="10" type="number" required aria-required="true"
                         aria-describedby="batch-size-helper" min="0" step="1" />
                 </label>
-                <fieldset>
-                    <legend>Yeast type:</legend>
-                    <input type="radio" id="any" value="any" name="yeast" checked />
-                    <label for="any">Any</label>
-                    <input type="radio" id="dry" value="dry" name="yeast" />
-                    <label for="dry">Dry</label>
-                    <input type="radio" id="liquid" value="liquid" name="yeast" />
-                    <label for="liquid">Liquid</label>
-                </fieldset>
+                <label>
+                    Style
+                    <select name="style" required aria-required="true">
+                        <option selected disabled value="">Pick a style</option>
+                        <option value="Any style">Any style</option>
+                        {{ range .Styles }}
+                        <option value="{{ .Name }}">{{ .Name }}</option>
+                        {{ end }}
+                    </select>
+                </label>
                 <label>
                     Description
                     <textarea name="description" placeholder="Describe the beer you want to brew"
@@ -61,6 +52,28 @@
                             of these
                             examples!</a></small>
                 </label>
+                <fieldset>
+                    <legend>Yeast</legend>
+                    <input type="radio" id="any" value="any" name="yeast" checked />
+                    <label for="any">Any</label>
+                    <input type="radio" id="dry" value="dry" name="yeast" />
+                    <label for="dry">Dry</label>
+                    <input type="radio" id="liquid" value="liquid" name="yeast" />
+                    <label for="liquid">Liquid</label>
+                </fieldset>
+                <fieldset>
+                    <legend>SRM</legend>
+                    <label>
+                        <input name="useSrm" type="checkbox" role="switch" aria-invalid="false" value="true" />
+                        Use SRM
+                    </label>
+                    <input name="srm" class="srmGradient" type="range" min="1" max="40" value="10" step="1"
+                        disabled />
+                    <div class="srmGradient"></div>
+                    <small>Use this as a rough indicator of what color the beer should be. The recipe will not be able
+                        to match an exact value.</small>
+                </fieldset>
+                <hr>
                 <button type="submit">Brew it!</button>
             </form>
         </section>

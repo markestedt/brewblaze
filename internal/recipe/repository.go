@@ -87,6 +87,10 @@ func (r Repository) Generate(input UserInput) (string, string, error) {
 		userPrompt = fmt.Sprintf("%s Only suggest recipes using %s yeast.", userPrompt, input.Yeast)
 	}
 
+	if input.UseSrm {
+		userPrompt = fmt.Sprintf("%s Try to hit a target SRM value of %f", userPrompt, input.Srm)
+	}
+
 	resp, err := r.Ai.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
