@@ -71,13 +71,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const srmCheckbox = document.querySelector("[name='useSrm']")
   const srmRange = document.querySelector("[name='srm']")
 
-  srmCheckbox.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      srmRange.disabled = false;
-    } else {
-      srmRange.disabled = true;
-    }
-  })
+  if (srmCheckbox) {
+    srmCheckbox.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        srmRange.disabled = false;
+      } else {
+        srmRange.disabled = true;
+      }
+    })
+  }
 });
 
 
