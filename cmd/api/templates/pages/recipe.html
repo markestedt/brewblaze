@@ -35,7 +35,11 @@
 <body>
     <main class="container">
         {{template "components/header"}}
+        <section>
+            <small>Want to make another recipe? Go to the <a href="/">BrewBlaze startpage</a> and get started!</small>
+        </section>
         {{template "components/recipe" .}}
+        {{template "components/contact"}}
     </main>
 </body>
 
