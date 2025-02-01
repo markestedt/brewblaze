@@ -14,8 +14,8 @@ import (
 	"github.com/appwrite/sdk-for-go/appwrite"
 	"github.com/appwrite/sdk-for-go/client"
 	"github.com/joho/godotenv"
-	"github.com/markestedt/brewmind/internal/beerstyles"
-	"github.com/markestedt/brewmind/internal/recipe"
+	"github.com/markestedt/brewblaze/internal/beerstyles"
+	"github.com/markestedt/brewblaze/internal/recipe"
 	"github.com/sashabaranov/go-openai"
 )
 

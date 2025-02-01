@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/markestedt/brewmind/internal/beerstyles"
-	recipe "github.com/markestedt/brewmind/internal/recipe"
-	"github.com/markestedt/brewmind/internal/tools"
+	"github.com/markestedt/brewblaze/internal/beerstyles"
+	recipe "github.com/markestedt/brewblaze/internal/recipe"
+	"github.com/markestedt/brewblaze/internal/tools"
 )
 
 type recipeViewModel struct {

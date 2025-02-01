@@ -1,4 +1,4 @@
-module github.com/markestedt/brewmind
+module github.com/markestedt/brewblaze
 
 go 1.23.0
 
